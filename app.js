@@ -17,7 +17,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended : false}));
 // middleware for routing
 app.use('/api', routes);
-
 // put in call back because asyncrhonous
 var server = app.listen(app.get('port'), function() {
   var port = server.address().port;
