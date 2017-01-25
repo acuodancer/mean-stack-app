@@ -33,14 +33,21 @@ module.exports.hotelsGetAll = function(req, res) {
   if (req.query && req.query.offset) {
     offset = parseInt(req.query.offset, 10);
   }
-  // verification
-  if (offset < 0) {
-    offset = 0;
-  }
   if (req.query && req.query.count) {
     count = parseInt(req.query.count, 10);
   }
   // verification
+  if (isNaN(offset) || isNaN(count)) {
+    res
+      .status(400)
+      .json({
+        "message" : 'If supplied in querystring, count and offset should be numbers'
+      });
+    return;
+  }
+  if (offset < 0) {
+    offset = 0;
+  }
   if (count < 0) {
     count = 5;
   };
