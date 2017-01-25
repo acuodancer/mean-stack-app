@@ -5,15 +5,24 @@ module.exports.reviewsGetAll = function(req, res) {
   // get info from requset
   var hotelId = req.params.hotelId;
   console.log("GET hotelId ", hotelId);
-
   Hotel
     .findById(hotelId)
     .select('reviews')
     .exec(function(err, doc) {
-      console.log("Returned doc ", doc);
+      var response = {
+        status : 200,
+        message : doc.reviews
+      };
+      if (err) {
+        console.log("Error finding reviews");
+        response.status = 500;
+        response.message = err;
+      } else {
+        console.log("Returned doc ", doc);
+      }
       res
-        .status(200)
-        .json(doc.reviews);
+        .status(response.status)
+        .json(response.doc);
     })
 }
 // GET a single review for one hotel
@@ -25,10 +34,29 @@ module.exports.reviewsGetOne = function(req, res) {
     .findById(hotelId)
     .select('reviews')
     .exec(function(err, hotel) {
-      console.log("Returned doc", hotel);
-      var review = hotel.reviews.id(reviewId);
+      var response = {
+        status : 200,
+        message : hotel.reviews.id(reviewId)
+      };
+      if (err) {
+        console.log("Error finding reviews");
+        response.status = 500;
+        response.message = err;
+      } else if (!hotel) {
+        response.status = 404;
+        response.message = {
+          "message" : "Hotel not found",
+        };
+      } else if (!hotel.reviews.id(reviewId)) {
+        response.status = 404;
+        response.message = {
+          "message" : "Review not found",
+        };
+      } else {
+          console.log("Returned doc", hotel);
+      }
       res
-        .status(200)
-        .json(review);
+        .status(response.status)
+        .json(response.message);
     })
 }

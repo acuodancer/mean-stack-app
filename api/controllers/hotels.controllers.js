@@ -90,18 +90,18 @@ module.exports.hotelsGetOne = function(req, res) {
   // get info from requset
   var hotelId = req.params.hotelId;
   console.log("GET htelId ", hotelId);
-  var response = {
-    status : 200,,
-    message : doc
-  };
   Hotel
     .findById(hotelId)
     .exec(function(err, doc) {
+      var response = {
+        status : 200,
+        message : doc
+      };
       if (err) {
         console.log("Error finding hotels");
         response.status = 500;
         response.message = err;
-      } else if(!doc)) {
+      } else if(!doc) {
         response.status = 404;
         response.message = {
           "message" : "Hotel not Found!"
