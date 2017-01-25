@@ -61,10 +61,17 @@ module.exports.hotelsGetAll = function(req, res) {
     .skip(offset)
     .limit(count)
     .exec(function(err, hotels) {
-      console.log("Found hotels: ", hotels.length);
-      res
-        .status(200)
-        .json(hotels);
+      if (err) {
+        console.log("Error finding hotels");
+        res
+          .status(500)
+          .json(err);
+      } else {
+        console.log("Found hotels: ", hotels.length);
+        res
+          .status(200)
+          .json(hotels);
+      }
     });
 };
 
