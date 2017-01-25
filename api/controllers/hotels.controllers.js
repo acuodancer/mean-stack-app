@@ -52,6 +52,7 @@ module.exports.hotelsGetAll = function(req, res) {
       .json({
         "message" : 'Querystring offset out of range'
       });
+      return;
   }
   if (count < 0 || count > MAX_COUNT) {
     res
@@ -59,6 +60,7 @@ module.exports.hotelsGetAll = function(req, res) {
       .json({
         "message" : 'Querystring count out of range'
       });
+      return;
   };
   //
   if (req.query && req.query.lat & req.query.lng) {
@@ -92,10 +94,23 @@ module.exports.hotelsGetOne = function(req, res) {
   Hotel
     .findById(hotelId)
     .exec(function(err, doc) {
-      res
-        .status(200)
-        .json(doc);
-    })
+      if (err) {
+        console.log("Error finding hotels");
+        res
+          .status(500)
+          .json(err);
+      } else if(!doc)) {
+        res
+          .status(404)
+          .json({
+            "message" : "Hotel ID not found"
+          });
+      } else {
+        res
+          .status(200)
+          .json(doc);
+        }
+    });
 };
 
 module.exports.hotelsAddOne = function(req, res) {
