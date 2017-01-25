@@ -90,26 +90,26 @@ module.exports.hotelsGetOne = function(req, res) {
   // get info from requset
   var hotelId = req.params.hotelId;
   console.log("GET htelId ", hotelId);
-
+  var response = {
+    status : 200,,
+    message : doc
+  };
   Hotel
     .findById(hotelId)
     .exec(function(err, doc) {
       if (err) {
         console.log("Error finding hotels");
-        res
-          .status(500)
-          .json(err);
+        response.status = 500;
+        response.message = err;
       } else if(!doc)) {
-        res
-          .status(404)
-          .json({
-            "message" : "Hotel ID not found"
-          });
-      } else {
-        res
-          .status(200)
-          .json(doc);
-        }
+        response.status = 404;
+        response.message = {
+          "message" : "Hotel not Found!"
+        };
+      }
+      res
+        .status(response.status)
+        .json(response.message);
     });
 };
 
