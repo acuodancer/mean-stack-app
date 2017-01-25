@@ -1,8 +1,32 @@
 var mongoose = require('mongoose');
 var Hotel = mongoose.model('Hotel');
 
+var runGeoQuerry = function(req, res) {
+  var lng = parseFloat(req.query.lng);
+  var lat = parseFloat(req.query.lat);
+  // JSON point
+  var point = {
+    type : "Point",
+    coordinates : [lng, lat]
+  };
+  // customize geo options
+  var geoOptions = {
+    spherical : true,
+    maxDistance : 2000,
+    num : 5
+  };
+  Hotel
+    .geoNear(point, geoOptions, function(err, results, stats) {
+      console.log('Geo results: ', results);
+      console.log('Geo stats: ', stats);
+      res
+        .status(200)
+        .json(results);
+    });
+};
+
 module.exports.hotelsGetAll = function(req, res) {
-  // default values for offset & count
+  // OFFSET & COUNT
   var offset = 0;
   var count = 5;
   //otherwise get from query
@@ -20,7 +44,11 @@ module.exports.hotelsGetAll = function(req, res) {
   if (count < 0) {
     count = 5;
   };
-
+  //
+  if (req.query && req.query.lat & req.query.lng) {
+    runGeoQuerry(req, res);
+    return;
+  }
   Hotel
     .find()
     .skip(offset)
