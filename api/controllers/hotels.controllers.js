@@ -29,6 +29,7 @@ module.exports.hotelsGetAll = function(req, res) {
   // OFFSET & COUNT
   var offset = 0;
   var count = 5;
+  var MAX_COUNT = 10;
   //otherwise get from query
   if (req.query && req.query.offset) {
     offset = parseInt(req.query.offset, 10);
@@ -46,10 +47,18 @@ module.exports.hotelsGetAll = function(req, res) {
     return;
   }
   if (offset < 0) {
-    offset = 0;
+    res
+      .status(400)
+      .json({
+        "message" : 'Querystring offset out of range'
+      });
   }
-  if (count < 0) {
-    count = 5;
+  if (count < 0 || count > MAX_COUNT) {
+    res
+      .status(400)
+      .json({
+        "message" : 'Querystring count out of range'
+      });
   };
   //
   if (req.query && req.query.lat & req.query.lng) {
