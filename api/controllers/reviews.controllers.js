@@ -180,3 +180,7 @@ module.exports.reviewsUpdateOne = function(req, res) {
       }
     });
 }
+
+module.exports.reviewsDeleteOne = function(req, res) {
+  
+}
