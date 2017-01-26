@@ -166,7 +166,7 @@ module.exports.reviewsUpdateOne = function(req, res) {
         doc.name = req.body.name;
         doc.rating = parseInt(req.body.rating, 10);
         doc.review = req.body.review;
-        hotel.save(function(err, hotelUpdated)) {
+        hotel.save(function(err, hotelUpdated){
           if (err) {
             res
               .status(500)
@@ -176,7 +176,7 @@ module.exports.reviewsUpdateOne = function(req, res) {
               .status(204)
               .json();
           }
-        }
+        });
       }
     });
 }
