@@ -10,7 +10,8 @@ router
   .post(ctrlHotels.hotelsAddOne);
 router
   .route('/hotels/:hotelId')
-  .get(ctrlHotels.hotelsGetOne);
+  .get(ctrlHotels.hotelsGetOne)
+  .put(ctrlHotels.hotelUpdateOne);
 // Reviews routes
 router
   .route('/hotels/:hotelId/reviews')
@@ -18,5 +19,7 @@ router
   .post(ctrlReviews.reviewsAddOne);
 router
   .route('/hotels/:hotelId/reviews/:reviewId')
-  .get(ctrlReviews.reviewsGetOne);
+  .get(ctrlReviews.reviewsGetOne)
+  .put(ctrlReviews.reviewsUpdateOne);
+  
 module.exports = router;
