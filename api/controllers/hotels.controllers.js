@@ -147,7 +147,7 @@ module.exports.hotelsAddOne = function(req, res) {
       } else {
         console.log('Hotel created ', hotel);
         res
-          .status(200)
+          .status(201)
           .json(hotel)
       }
     });
