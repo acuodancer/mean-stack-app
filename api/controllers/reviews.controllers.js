@@ -124,3 +124,7 @@ module.exports.reviewsAddOne = function(req, res) {
       }
     });
 };
+
+module.exports.reviewsUpdateOne = function(req, res) {
+  
+}
