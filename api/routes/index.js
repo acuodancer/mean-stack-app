@@ -6,7 +6,7 @@ var ctrlReviews = require('../controllers/reviews.controllers.js');
 // Hotel routes
 router
   .route('/hotels')
-  .get(ctrlHotels.hotelsGetAll);
+  .get(ctrlHotels.hotelsGetAll)
   .post(ctrlHotels.hotelsAddOne);
 router
   .route('/hotels/:hotelId')
