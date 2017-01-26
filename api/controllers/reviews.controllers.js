@@ -126,5 +126,57 @@ module.exports.reviewsAddOne = function(req, res) {
 };
 
 module.exports.reviewsUpdateOne = function(req, res) {
-  
+  var hotelId = req.params.hotelId;
+  var reviewId = req.params.reviewId;
+  console.log('GET reviewId ' + reviewId + ' for hotelId ' + hotelId);
+  Hotel
+    .findById(hotelId)
+    .select('reviews')
+    .exec(function(err, hotel) {
+      var response = {
+        status : 200,
+        message : {}
+      };
+      if (err) {
+        console.log("Error finding hotel");
+        response.status = 500;
+        response.message = err;
+      } else if(!hotel) {
+        console.log("Hotel id not found in database", id);
+        response.status = 404;
+        response.message = {
+          "message" : "Hotel ID not found " + id
+        };
+      } else {
+        // Get the review
+        doc = hotel.reviews.id(reviewId);
+        // If the review doesn't exist Mongoose returns null
+        if (!response.message) {
+          response.status = 404;
+          response.message = {
+            "message" : "Review ID not found " + reviewId
+          };
+        }
+      }
+      if (response.status !== 200) {
+        res
+          .status(response.status)
+          .json(response.message);
+      } else {
+        doc.name = req.body.name;
+        doc.rating = parseInt(req.body.rating, 10);
+        doc.review = req.body.review;
+        hotel.save(function(err, hotelUpdated)) {
+          if (err) {
+            res
+              .status(500)
+              .json(err)
+          } else {
+            res
+              .status(204)
+              .json();
+          }
+        }
+      }
+    });
 }
